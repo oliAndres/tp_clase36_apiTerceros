@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <br>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/movies">Peliculas</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Película: <%= title %></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <img src="<%= /^(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(image)  ? image : `/img/${image}` %>" class="img-fluid" alt="">
+                </div>
+                <div class="col-12 col-md-8">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item fs-3"><b><%= title.toUpperCase() %></b></li>
+                        <li class="list-group-item"><b>Duración: </b><%= length %></li>
+                        <li class="list-group-item"><b>Estreno: </b><%= moment(release_date).format('DD/MM/YYYY') %></li>
+                        <li class="list-group-item"><b>Premios: </b><%= awards %></li>
+                        <li class="list-group-item"><b>Rating: </b><%= rating %></li>
+                      </ul>
+                      <hr>
+                      <h6> Actores:</h6>
+                      <ul class="list-group list-group-flush">
+                        <% actors.forEach(actor => { %>
+                            <li class="list-group-item"> <%= actor.first_name %> <b><%= actor.last_name %></b></li>
+                        <% }) %>
+                      </ul>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-end gap-2">
+                    
+                    <a href="/movies/edit/<%= id %>" class="btn btn-outline-success">Editar</a>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#movieModal<%= id %>">
+                        Eliminar
+                    </button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="movieModal<%= id %>" tabindex="-1" aria-labelledby="movieModal<%= id %>Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="movieModal<%= id %>Label">Atención</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            <p>¿ Seguro queres eliminar la película: <b>" <%= title %> "</b> ?</p>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <form action="/movies/delete/<%= id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                            </form>                                            
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+</body>
+</html>
